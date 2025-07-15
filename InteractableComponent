@@ -1,0 +1,19 @@
+class_name InteractableComponent #When declaring something, usuallu only Class' can have the first letter be capital
+
+extends Area2D #Defines where the script goes
+
+#Define Signals
+signal interactable_activated 
+signal interactable_deactivated 
+
+#Define Actions which calls the signals via Functions. 
+
+
+func _on_body_entered(_body: Node2D) -> void:  #Got this by pressing the Component -> Node Dock -> Signals -> Area2D -> Right click body_entered and exited -> connected
+	interactable_activated.emit()                                                       
+#Summary -> defining that when the function detects that a body has ENTERED the Interactable Component that it must emit the Interactable Activated signal
+
+func _on_body_exited(_body: Node2D) -> void:
+	interactable_deactivated.emit()
+#Summary -> defining that when the function detects that a body has EXITED the Interactable Component that it must emit the Interactable DEactivated signal
+

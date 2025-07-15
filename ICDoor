@@ -1,0 +1,38 @@
+# IC = Interactable Component
+class_name Door extends CollisionObject2D
+
+#Items from our scene our now actively listening for a signal 
+@onready var door_animated_sprite: AnimatedSprite2D = $DoorAnimatedSprite
+@onready var collision_shape_ic_door: CollisionShape2D = $CollisionShapeDoor
+@onready var interactable_component: InteractableComponent = $InteractableComponent
+
+#scene change 
+@export var connected_scene = "null"
+
+
+var scene_folder = "res://Scenes/"
+
+
+#link interactable component signals 
+func _ready() -> void:
+	interactable_component.interactable_activated.connect(on_interactable_activated) 
+	interactable_component.interactable_deactivated.connect(on_interactable_deactivated)
+	#when variable is ready/hears a signal, the connect function redirects to method "()"
+
+#the methods 
+func on_interactable_activated() -> void:
+	#door stuff
+	door_animated_sprite.play("Open_Door") #play open door animation that was made in the door scene
+	collision_layer = 2
+	print("door wuz opened") #print statement for debugging
+	#scene change stuff
+	var full_path = scene_folder + connected_scene + ".tscn"
+	var scene_tree = get_tree()
+	scene_tree.change_scene_to_file(full_path)
+	
+func on_interactable_deactivated() -> void:
+	door_animated_sprite.play("Close_Door")
+	collision_layer = 3  #Temp Change collision layer so player can walk through door
+	print("door now clozed")
+	
+
